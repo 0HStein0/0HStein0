@@ -20,4 +20,6 @@ My name is Haeden Stein and I am a computer science major at Wright State Univer
 
 I am currently developing and improving my skills in Java as well as learning more about how a command line works.
 
+One of my many projects I intend working on is at the Computer Science class. It involves a game made through Java using GUI which means you can be able to press buttons! It will be a-maze-ing!
+
 If you wish to contact me, please email me at stein.51@wright.edu.
