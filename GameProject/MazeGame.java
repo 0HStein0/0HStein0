@@ -102,3 +102,32 @@ public class MazeGame extends JPanel implements KeyListener {
         frame.setLocationRelativeTo(null);
     }
 }
+
+class MainMenu extends JFrame {
+    public MainMenu() {
+        setTitle("Maze Game");
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(null);
+
+        JButton startButton = new JButton("Start Game");
+        startButton.setPreferredSize(new Dimension(150, 50));
+        startButton.setBounds(350, 250, 150, 50);
+
+        getContentPane().setBackground(Color.BLACK);
+
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+
+        add(startButton);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new MainMenu();
+    }
+}
