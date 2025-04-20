@@ -92,10 +92,12 @@ public class MazeGame extends JPanel implements KeyListener {
             int topRow = (newY - playerSize/2 - yOffset) / CELL_SIZE;
             int bottomRow = (newY + playerSize/2 - yOffset) / CELL_SIZE;
 
-            if (isWalkable(topRow, leftCol) && isWalkable(topRow, rightCol) &&
-                isWalkable(bottomRow, leftCol) && isWalkable(bottomRow, rightCol)) {
-                playerX = newX;
-                playerY = newY;
+            if (newX >= xOffset && newX + playerSize <= COLS * CELL_SIZE + xOffset && newY >= yOffset && newY + playerSize <= ROWS * CELL_SIZE + yOffset) {
+                if (isWalkable(topRow, leftCol) && isWalkable(topRow, rightCol) &&
+                    isWalkable(bottomRow, leftCol) && isWalkable(bottomRow, rightCol)) {
+                    playerX = newX;
+                    playerY = newY;
+                }
             }
 
             if (bottomRow == ROWS - 2 && rightCol == COLS - 2) {
