@@ -75,7 +75,7 @@ public class MazeGame extends JPanel implements KeyListener {
 
     @Override
         public void keyPressed(KeyEvent e) {
-            int moveAmount = 5;
+            int moveAmount = CELL_SIZE / 3;
             int newX = playerX;
             int newY = playerY;
             if (e.getKeyCode() == KeyEvent.VK_UP) newY -= moveAmount;
