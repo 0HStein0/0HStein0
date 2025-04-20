@@ -1,5 +1,7 @@
 package GameProject;
 
+import javax.swing.JOptionPane;
+
 public class Maze {
     private char[][] grid;
     private int playerX;

@@ -3,7 +3,7 @@ package GameProject;
 import javax.swing.*;
 
 public class main {
-    public static void main(String[] args) {
+    public main (String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Maze Game");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
