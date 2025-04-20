@@ -11,11 +11,14 @@ public class MainMenu extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        JButton smallButton = new JButton("Start Game");
-        smallButton.setPreferredSize(new Dimension(100, 40));
+        JButton startButton = new JButton("Start Game");
+        startButton.setPreferredSize(new Dimension(150, 50));
 
-        setLayout(new FlowLayout());
-        add(smallButton);
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 250));
+        panel.add(startButton);
+
+        setLayout(new BorderLayout());
+        add(panel, BorderLayout.CENTER);
 
         setVisible(true);
     }
