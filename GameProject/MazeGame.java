@@ -10,16 +10,13 @@ public class MazeGame extends JPanel implements KeyListener {
     private final int COLS = 21;
     private final int CELL_SIZE = 30;
     private int[][] maze;
-    private int playerX, playerY;
-
+    private int playerRow = 1, playerCol = 1;
 
     public MazeGame() {
         setPreferredSize(new Dimension(COLS * CELL_SIZE, ROWS * CELL_SIZE));
         setFocusable(true);
         addKeyListener(this);
         generateMaze();
-        playerX = 1 * CELL_SIZE + CELL_SIZE / 2;
-        playerY = 1 * CELL_SIZE + CELL_SIZE / 2;
     }
 
     private void generateMaze() {
@@ -60,10 +57,8 @@ public class MazeGame extends JPanel implements KeyListener {
         }
 
         g.setColor(Color.BLUE);
-        int playerSize = CELL_SIZE / 3;
-        g.fillRect(playerX - playerSize/2, playerY - playerSize/2, playerSize, playerSize);
+        g.fillRect(playerCol * CELL_SIZE + xOffset, playerRow * CELL_SIZE + yOffset, CELL_SIZE, CELL_SIZE);
 
-        
         g.setColor(Color.RED);
         g.fillRect((COLS - 2) * CELL_SIZE + xOffset, (ROWS - 2) * CELL_SIZE + yOffset, CELL_SIZE, CELL_SIZE);
 
@@ -74,46 +69,25 @@ public class MazeGame extends JPanel implements KeyListener {
     }
 
     @Override
-        public void keyPressed(KeyEvent e) {
-            int moveAmount = CELL_SIZE / 3;
-            int newX = playerX;
-            int newY = playerY;
-            if (e.getKeyCode() == KeyEvent.VK_UP) newY -= moveAmount;
-            if (e.getKeyCode() == KeyEvent.VK_DOWN) newY += moveAmount;
-            if (e.getKeyCode() == KeyEvent.VK_LEFT) newX -= moveAmount;
-            if (e.getKeyCode() == KeyEvent.VK_RIGHT) newX += moveAmount;
-
-            int playerSize = CELL_SIZE / 3;
-            int xOffset = (getWidth() - COLS * CELL_SIZE) / 2;
-            int yOffset = (getHeight() - ROWS * CELL_SIZE) / 2;
-
-            int leftCol = (newX - playerSize/2 - xOffset) / CELL_SIZE;
-            int rightCol = (newX + playerSize/2 - xOffset) / CELL_SIZE;
-            int topRow = (newY - playerSize/2 - yOffset) / CELL_SIZE;
-            int bottomRow = (newY + playerSize/2 - yOffset) / CELL_SIZE;
-
-            if (newX >= xOffset && newX + playerSize <= COLS * CELL_SIZE + xOffset && newY >= yOffset && newY + playerSize <= ROWS * CELL_SIZE + yOffset) {
-                if (isWalkable(topRow, leftCol) && isWalkable(topRow, rightCol) &&
-                    isWalkable(bottomRow, leftCol) && isWalkable(bottomRow, rightCol)) {
-                    playerX = newX;
-                    playerY = newY;
-                }
-            }
-
-            if (bottomRow == ROWS - 2 && rightCol == COLS - 2) {
-                JOptionPane.showMessageDialog(this, "You win!");
-                generateMaze();
-                playerX = 1 * CELL_SIZE + CELL_SIZE / 2;
-                playerY = 1 * CELL_SIZE + CELL_SIZE / 2;
-            }
-
+    public void keyPressed(KeyEvent e) {
+        int newRow = playerRow, newCol = playerCol;
+        if (e.getKeyCode() == KeyEvent.VK_UP) newRow--;
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) newRow++;
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) newCol--;
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) newCol++;
+        if (maze[newRow][newCol] == 0) {
+            playerRow = newRow;
+            playerCol = newCol;
+        }
+        if (playerRow == ROWS - 2 && playerCol == COLS - 2) {
+            JOptionPane.showMessageDialog(this, "You win!");
+            generateMaze();
+            playerRow = 1;
+            playerCol = 1;
             repaint();
         }
-
-        private boolean isWalkable(int row, int col) {
-            return row >= 0 && row < ROWS && col >= 0 && col < COLS && maze[row][col] == 0;
-        }
-        
+        repaint();
+    }
 
     @Override public void keyReleased(KeyEvent e) {}
     @Override public void keyTyped(KeyEvent e) {}
