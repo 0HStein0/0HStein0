@@ -57,8 +57,11 @@ public class MazeGame extends JPanel implements KeyListener {
         }
 
         g.setColor(Color.BLUE);
-        g.fillRect(playerCol * CELL_SIZE + xOffset, playerRow * CELL_SIZE + yOffset, CELL_SIZE, CELL_SIZE);
-
+        int playerSize = CELL_SIZE / 3;
+        int playerX = playerCol * CELL_SIZE + xOffset + (CELL_SIZE - playerSize) / 2;
+        int playerY = playerRow * CELL_SIZE + yOffset + (CELL_SIZE - playerSize) / 2;
+        g.fillRect(playerX, playerY, playerSize, playerSize);
+        
         g.setColor(Color.RED);
         g.fillRect((COLS - 2) * CELL_SIZE + xOffset, (ROWS - 2) * CELL_SIZE + yOffset, CELL_SIZE, CELL_SIZE);
 
