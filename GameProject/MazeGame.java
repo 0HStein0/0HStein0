@@ -92,6 +92,16 @@ public class MazeGame extends JPanel implements KeyListener {
     @Override public void keyReleased(KeyEvent e) {}
     @Override public void keyTyped(KeyEvent e) {}
 
+    public static void startGame() {
+        JFrame frame = new JFrame("Maze Game");
+        MazeGame game = new MazeGame();
+        frame.add(game);
+        frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+    }
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Maze Game");
         MazeGame game = new MazeGame();
@@ -120,6 +130,8 @@ class MainMenu extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                MazeGame.startGame();
+                dispose();
             }
         });
 
