@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class Main extends JFrame { // The main menu class remains public
+public class Main extends JFrame {
 
     public Main() {
         setTitle("Maze Game");
@@ -27,7 +27,7 @@ public class Main extends JFrame { // The main menu class remains public
     }
 
     public static void main(String[] args) {
-        new Main(); // Starts the main menu
+        new Main();
     }
 }
 
@@ -39,6 +39,7 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
     private int playerRow = 1, playerCol = 1;
 
     public MazeGame() {
+        
         setPreferredSize(new Dimension(COLS * CELL_SIZE, ROWS * CELL_SIZE));
         setFocusable(true);
         addKeyListener(this);
@@ -85,13 +86,13 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
         g.setColor(Color.BLUE);
         g.fillRect(playerCol * CELL_SIZE + xOffset, playerRow * CELL_SIZE + yOffset, CELL_SIZE, CELL_SIZE);
 
-        g.setColor(Color.RED);
+        g.setColor(Color.WHITE);
         g.fillRect((COLS - 2) * CELL_SIZE + xOffset, (ROWS - 2) * CELL_SIZE + yOffset, CELL_SIZE, CELL_SIZE);
 
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(0, 0, getWidth(), 30);
         g.setColor(Color.BLACK);
-        g.drawString("Use Arrow Keys to Move. Reach the Red Square to win!", 10, 20);
+        g.drawString("Use Arrow Keys to Move. Reach the White Square to win!", 10, 20);
     }
 
     @Override
@@ -119,6 +120,7 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
     @Override public void keyTyped(KeyEvent e) {}
 
     public static void startGame(JFrame frame) {
+        frame.dispose();
         frame.getContentPane().removeAll();
         MazeGame game = new MazeGame();
         frame.add(game);
