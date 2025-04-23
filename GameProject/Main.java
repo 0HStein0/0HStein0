@@ -5,7 +5,33 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class MazeGame extends JPanel implements KeyListener {
+public class Main extends JFrame { // The main menu class remains public
+
+    public Main() {
+        setTitle("Maze Game");
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        JButton startButton = new JButton("Start Game");
+        startButton.setPreferredSize(new Dimension(150, 50));
+        startButton.addActionListener(e -> MazeGame.startGame(this));
+
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 250));
+        panel.add(startButton);
+
+        setLayout(new BorderLayout());
+        add(panel, BorderLayout.CENTER);
+
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new Main(); // Starts the main menu
+    }
+}
+
+class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-public
     private final int ROWS = 21;
     private final int COLS = 21;
     private final int CELL_SIZE = 30;
@@ -50,7 +76,7 @@ public class MazeGame extends JPanel implements KeyListener {
         int yOffset = (getHeight() - ROWS * CELL_SIZE) / 2;
 
         for (int r = 0; r < ROWS; r++) {
-            for (int c = 0; c < COLS; c++) {
+            for (int c = 0; COLS > c; c++) {
                 g.setColor(maze[r][c] == 1 ? Color.DARK_GRAY : Color.BLACK);
                 g.fillRect(c * CELL_SIZE + xOffset, r * CELL_SIZE + yOffset, CELL_SIZE, CELL_SIZE);
             }
@@ -92,54 +118,13 @@ public class MazeGame extends JPanel implements KeyListener {
     @Override public void keyReleased(KeyEvent e) {}
     @Override public void keyTyped(KeyEvent e) {}
 
-    public static void startGame() {
-        JFrame frame = new JFrame("Maze Game");
+    public static void startGame(JFrame frame) {
+        frame.getContentPane().removeAll();
         MazeGame game = new MazeGame();
         frame.add(game);
         frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
         frame.setLocationRelativeTo(null);
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Maze Game");
-        MazeGame game = new MazeGame();
-        frame.add(game);
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
-    }
-}
-
-class MainMenu extends JFrame {
-    public MainMenu() {
-        setTitle("Maze Game");
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setLayout(null);
-
-        JButton startButton = new JButton("Start Game");
-        startButton.setPreferredSize(new Dimension(150, 50));
-        startButton.setBounds(350, 250, 150, 50);
-
-        getContentPane().setBackground(Color.BLACK);
-
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MazeGame.startGame();
-                dispose();
-            }
-        });
-
-        add(startButton);
-        setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new MainMenu();
+        game.requestFocusInWindow();
     }
 }
