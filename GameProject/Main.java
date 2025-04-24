@@ -60,7 +60,7 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
         dfs(1, 1);
 
         roundCount++;
-        enemyEnabled = roundCount > 5 && new Random().nextBoolean();
+        enemyEnabled = (roundCount == 1) || (roundCount > 5 && new Random().nextBoolean());
         if (enemyEnabled) {
             spawnEnemy();
         }
@@ -91,12 +91,11 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
         enemy = new Enemy(row, col, maze);
         enemy.setVisible(false);
     
-        enemy = new Enemy(row, col, maze);
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                enemy.setVisible(true);
                 enemy.activate(playerRow, playerCol);
+                enemy.setVisible(true);
             }
         }, 5000);
     }
@@ -150,9 +149,22 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
             playerCol = newCol;
             playerPath.add(new int[]{newRow, newCol});
         }
+
+        if (enemyEnabled && enemy.isVisible() && playerRow == enemy.getRow() && playerCol == enemy.getCol()) {
+            JOptionPane.showMessageDialog(this, "Game Over.");
+            generateMaze();
+            playerRow = 1;
+            playerCol = 1;
+            playerPath.clear();
+            enemy = null;
+            enemyEnabled = false;
+            System.exit(0);
+        }
+        
         if (playerRow == ROWS - 2 && playerCol == COLS - 2) {
             JOptionPane.showMessageDialog(this, "You win!");
             if (enemy != null) {
+                enemy.setVisible(false);
                 enemy.deactivate();
             }
             generateMaze();
@@ -160,6 +172,7 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
             playerCol = 1;
             playerPath.clear();
             repaint();
+            return;
         }
         repaint();
     }
