@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Main extends JFrame {
 
@@ -37,6 +39,9 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
     private final int CELL_SIZE = 30;
     private int[][] maze;
     private int playerRow = 1, playerCol = 1;
+    private Enemy enemy;
+    private int roundCount = 0;
+    private boolean enemyEnabled = false;
 
     public MazeGame() {
         
@@ -52,6 +57,12 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
             Arrays.fill(maze[i], 1);
         }
         dfs(1, 1);
+
+        roundCount++;
+        enemyEnabled = roundCount > 5 && new Random().nextBoolean();
+        if (enemyEnabled) {
+            spawnEnemy();
+        }
     }
 
     private void dfs(int row, int col) {
@@ -68,11 +79,30 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
         }
     }
 
+    private void spawnEnemy() {
+        Random random = new Random();
+        int row, col;
+        do {
+            row = random.nextInt(ROWS - 2) + 1;
+            col = random.nextInt(COLS - 2) + 1;
+        } while (maze[row][col] != 0 || (row == ROWS - 2 && col == COLS - 2));
+    
+        enemy = new Enemy(row, col, maze);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                enemy.activate(playerRow, playerCol);
+            }
+        }, 5000);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
+        int cellWidth = getWidth() / COLS;
+        int cellHeight = getHeight() / ROWS;
         int xOffset = (getWidth() - COLS * CELL_SIZE) / 2;
         int yOffset = (getHeight() - ROWS * CELL_SIZE) / 2;
 
@@ -88,6 +118,11 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
 
         g.setColor(Color.WHITE);
         g.fillRect((COLS - 2) * CELL_SIZE + xOffset, (ROWS - 2) * CELL_SIZE + yOffset, CELL_SIZE, CELL_SIZE);
+
+        if (enemyEnabled) {
+            g.setColor(Color.RED);
+            g.fillRect(enemy.getCol() * cellWidth, enemy.getRow() * cellHeight, cellWidth, cellHeight);
+        }
 
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(0, 0, getWidth(), 30);
