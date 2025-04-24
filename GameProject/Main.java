@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -86,11 +87,15 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
             row = random.nextInt(ROWS - 2) + 1;
             col = random.nextInt(COLS - 2) + 1;
         } while (maze[row][col] != 0 || (row == ROWS - 2 && col == COLS - 2));
+
+        enemy = new Enemy(row, col, maze);
+        enemy.setVisible(false);
     
         enemy = new Enemy(row, col, maze);
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
+                enemy.setVisible(true);
                 enemy.activate(playerRow, playerCol);
             }
         }, 5000);
@@ -128,7 +133,10 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
         g.fillRect(0, 0, getWidth(), 30);
         g.setColor(Color.BLACK);
         g.drawString("Use Arrow Keys to Move. Reach the White Square to win!", 10, 20);
+        g.drawString("Room #" + roundCount, 390, 20);
     }
+
+    private List<int[]> playerPath = new ArrayList<>();
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -140,12 +148,17 @@ class MazeGame extends JPanel implements KeyListener { // MazeGame is now non-pu
         if (maze[newRow][newCol] == 0) {
             playerRow = newRow;
             playerCol = newCol;
+            playerPath.add(new int[]{newRow, newCol});
         }
         if (playerRow == ROWS - 2 && playerCol == COLS - 2) {
             JOptionPane.showMessageDialog(this, "You win!");
+            if (enemy != null) {
+                enemy.deactivate();
+            }
             generateMaze();
             playerRow = 1;
             playerCol = 1;
+            playerPath.clear();
             repaint();
         }
         repaint();

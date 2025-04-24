@@ -1,6 +1,8 @@
 package GameProject;
 
 import javax.swing.*;
+
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -9,11 +11,21 @@ public class Enemy {
     private int targetRow, targetCol;
     private int[][] maze;
     private boolean active = false;
+    private boolean visible = false;
 
     public Enemy(int startRow, int startCol, int[][] maze) {
         this.row = startRow;
         this.col = startCol;
         this.maze = maze;
+        this.visible = false;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+    
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public void activate(int targetRow, int targetCol) {
@@ -50,12 +62,21 @@ public class Enemy {
         } else if (col > targetCol && maze[row][col - 1] == 0) {
             col--;
         }
-
-        if (row == targetRow && col == targetCol) {
-            JOptionPane.showMessageDialog(null, "The enemy caught you! Game Over.");
-            System.exit(0);
-        }
     }
+
+        private int pathIndex = 0;
+        public void moveTowardPlayerPath(List<int[]> playerPath) {
+            if (pathIndex < playerPath.size()) {
+                int[] nextStep = playerPath.get(pathIndex);
+                row = nextStep[0];
+                col = nextStep[1];
+                pathIndex++;
+                if (row == targetRow && col == targetCol) {
+                    JOptionPane.showMessageDialog(null, "Game Over.");
+                    System.exit(0);
+                }
+            }
+        }
 
     public int getRow() {
         return row;
