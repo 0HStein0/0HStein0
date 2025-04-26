@@ -1,10 +1,10 @@
 package GameProject;
 
+
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.util.*;
 import java.util.List;
 
@@ -59,12 +59,12 @@ public class MazeGame extends JFrame implements KeyListener {
         JButton startButton = new JButton("Start Game");
         startButton.setFont(new Font("Arial", Font.BOLD, 24));
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        startButton.addActionListener(e -> startGame());
+        startButton.addActionListener(_ -> startGame());
 
         JButton exitButton = new JButton("Exit");
         exitButton.setFont(new Font("Arial", Font.BOLD, 24));
         exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        exitButton.addActionListener(e -> System.exit(0));
+        exitButton.addActionListener(_ -> System.exit(0));
 
         panel.add(Box.createVerticalGlue());
         panel.add(title);
@@ -110,7 +110,7 @@ public class MazeGame extends JFrame implements KeyListener {
     }
 
     private void startTimer() {
-        gameTimer = new Timer(1000, e -> {
+        gameTimer = new Timer(1000, _ -> {
             timeLeft--;
             repaint();
             if (timeLeft <= 0) {
